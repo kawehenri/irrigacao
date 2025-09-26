@@ -13,4 +13,4 @@ class Registro(db.Model):
 
  # Relacionamentos com outras tabelas
     usuario = db.relationship("Usuario", backref="tb_registro")  
-    valvula = db.relationship("Valvula", backref="tb_valvula")      
+    valvula = db.relationship("Valvula", backref="tb_valvula")
