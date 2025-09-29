@@ -115,3 +115,46 @@ def delete_registro(registro_id: int) -> bool:
     db.session.commit()
     return True
 
+
+# Funções solicitadas no estilo simples
+def criar_registro(registro) -> Registro:
+    """Cria um registro a partir de um objeto simples (DTO) com atributos esperados.
+
+    Espera atributos: status, dt_acionamento, id_valvula, id_usuario.
+    Mapeia dt_acionamento -> data_acionamento do modelo.
+    """
+    # Valida FKs se disponíveis
+    try:
+        if getattr(registro, "id_usuario", None) is not None:
+            _assert_usuario_exists(registro.id_usuario)
+        if getattr(registro, "id_valvula", None) is not None:
+            _assert_valvula_exists(registro.id_valvula)
+    except Exception:
+        # Mantém compatibilidade com a versão simples (sem validação explícita)
+        pass
+
+    registro_db = Registro(
+        status=registro.status,
+        data_acionamento=getattr(registro, "dt_acionamento", None),
+        id_valvula=registro.id_valvula,
+        id_usuario=registro.id_usuario,
+    )
+    db.session.add(registro_db)
+    db.session.commit()
+    return registro_db
+
+
+def listar_registro() -> List[Registro]:
+    registro_db = Registro.query.all()
+    return registro_db
+
+
+def listar_registro_id(id: int) -> Optional[Registro]:
+    registro_encontrado = Registro.query.get(id)
+    try:
+        if registro_encontrado:
+            return registro_encontrado
+    except Exception:
+        return None
+    return None
+

@@ -5,6 +5,9 @@ from .registro_service import (
     create_registro,
     update_registro,
     delete_registro,
+    criar_registro,
+    listar_registro,
+    listar_registro_id,
 )
 
 __all__ = [
@@ -14,4 +17,7 @@ __all__ = [
     "create_registro",
     "update_registro",
     "delete_registro",
+    "criar_registro",
+    "listar_registro",
+    "listar_registro_id",
 ]
